@@ -33,7 +33,7 @@
                             <div class="row mb-3">
                                 <label for="example-email-input" class="col-sm-2 col-form-label"></label>
                                 <div class="col-sm-10">
-                                    <img id="showimg" class="rounded avatar-md mx-auto" alt="200x200" src="{{ asset('backend/assets/images/small/img-5.jpg') }}" data-holder-rendered="true">
+                                    <img id="showimg" class="rounded avatar-md mx-auto" alt="200x200" src="{{ !empty($adminData->profile_image)?url('upload/admin_images/'.$adminData->profile_image):url('upload/no_image.jpg') }}" data-holder-rendered="true">
                                 </div>
                             </div>
                             <!-- end row -->
