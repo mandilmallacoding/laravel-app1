@@ -24,14 +24,14 @@
                         <div class="row mb-3">
                             <label for="example-email-input" class="col-sm-2 col-form-label">Profile Image</label>
                             <div class="col-sm-10">
-                                <input class="form-control" type="file" placeholder="Email" id="email" value="{{ $adminData->email }}" name="profile_img">
+                                <input class="form-control" type="file" placeholder="Email" id="profile_img" value="" name="profile_img">
                             </div>
                         </div>
                         <!-- end row -->
                         <div class="row mb-3">
                             <label for="example-email-input" class="col-sm-2 col-form-label"></label>
                             <div class="col-sm-10">
-                                <img class="rounded avatar-md mx-auto" alt="200x200" src="{{ asset('backend/assets/images/small/img-5.jpg') }}" data-holder-rendered="true">
+                                <img id="showimg" class="rounded avatar-md mx-auto" alt="200x200" src="{{ asset('backend/assets/images/small/img-5.jpg') }}" data-holder-rendered="true">
                             </div>
                         </div>
                         <!-- end row -->
@@ -42,5 +42,21 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+
+    $(document).ready(function(){
+        $('#profile_img').change(function(e){
+            // console.log("mandil");
+
+            var reader = new FileReader();
+            reader.onload = function(e){
+                $('#showimg').attr('src',e.target.result);
+            }
+            reader.readAsDataURL(e.target.files['0']);
+        });
+    });
+
+</script>
 
 @endsection
