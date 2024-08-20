@@ -60,7 +60,9 @@ class AdminController extends Controller
     }
 
     public function ChangePassword(){
-        return view('admin.admin_change_password');
+        $id = Auth::user()->id;
+        $adminData = User::find($id);
+        return view('admin.admin_change_password',compact('adminData'));
     }
 
     public function UpdatePassword(Request $request): RedirectResponse
@@ -73,8 +75,8 @@ class AdminController extends Controller
         ]);
         $hashedpassword = Auth::user()->password;
         if(Hash::check($request->oldpassword, $hashedpassword)){
-
-            $users = User::find(Auth::id());
+            $id = Auth::user()->id;
+            $users = User::find($id);
             $users->password = bcrypt($request->newpassword);
             $users->save();
             //toaster
@@ -90,7 +92,7 @@ class AdminController extends Controller
                 'message' => 'old password not match',
                 'alert-type' => 'success'
                 );
-            return back()->$notification;
+            return back()->with($notification);
         }
     }
 }
