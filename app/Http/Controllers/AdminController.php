@@ -5,6 +5,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -56,5 +57,40 @@ class AdminController extends Controller
             'alert-type' => 'success'
         );
         return redirect()->route('admin.profile')->with($notification);
+    }
+
+    public function ChangePassword(){
+        return view('admin.admin_change_password');
+    }
+
+    public function UpdatePassword(Request $request): RedirectResponse
+    {
+        // echo "mandil";
+        $validateData = $request->validate([
+            'oldpassword' => 'required',
+            'newpassword' => 'required|confirmed',
+            // 'confirmpassword' => 'required|same:newpassword',
+        ]);
+        $hashedpassword = Auth::user()->password;
+        if(Hash::check($request->oldpassword, $hashedpassword)){
+
+            $users = User::find(Auth::id());
+            $users->password = bcrypt($request->newpassword);
+            $users->save();
+            //toaster
+            $notification = array(
+            'message' => 'old & new pw matched',
+            'alert-type' => 'success'
+            );
+            return back()->with($notification);
+        }else{
+
+            // session()->flash('message',"old password doesn't match");
+            $notification = array(
+                'message' => 'old password not match',
+                'alert-type' => 'success'
+                );
+            return back()->$notification;
+        }
     }
 }
