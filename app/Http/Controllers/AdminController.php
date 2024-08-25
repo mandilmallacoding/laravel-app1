@@ -63,34 +63,31 @@ class AdminController extends Controller
         return view('admin.admin_change_password');
     }
 
-    public function UpdatePassword(Request $request): RedirectResponse
-    {
-        // echo "mandil";
-        $validateData = $request->validate([
+
+    public function updatePassword(Request $request) {
+        // Validation
+        $request->validate([
             'oldpassword' => 'required',
-            'newpassword' => 'required|confirmed',
-            // 'confirmpassword' => 'required|same:newpassword',
+            'newpassword' => 'required|confirmed'
         ]);
-        $hashedpassword = Auth::user()->password;
-        if(Hash::check($request->oldpassword, $hashedpassword)){
 
-            $users = User::find(Auth::id());
-            $users->password = bcrypt($request->newpassword);
-            $users->save();
-            //toaster
-            $notification = array(
-            'message' => 'old & new pw matched',
-            'alert-type' => 'success'
-            );
+        if (!Hash::check($request->oldpassword, auth()->user()->password)) {
+            $notification = [
+                'message' => 'Old Password Does not Match!',
+                'alert-type' => 'error'
+            ];
             return back()->with($notification);
-        }else{
-
-            // session()->flash('message',"old password doesn't match");
-            $notification = array(
-                'message' => 'old password not match',
-                'alert-type' => 'success'
-                );
-            return back()->$notification;
         }
-    }
+
+        // Update The new Password
+        auth()->user()->update([
+            'password' => Hash::make($request->newpassword)
+        ]);
+
+        $notification = [
+            'message' => 'Password Changed Successfully',
+            'alert-type' => 'success'
+        ];
+        return back()->with($notification);
+    }/// end method
 }
