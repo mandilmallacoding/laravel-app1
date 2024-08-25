@@ -60,7 +60,9 @@ class AdminController extends Controller
     }
 
     public function ChangePassword(){
-        return view('admin.admin_change_password');
+        $id = Auth::user()->id;
+        $adminData = User::find($id);
+        return view('admin.admin_change_password',compact('adminData'));
     }
 
 
@@ -78,6 +80,7 @@ class AdminController extends Controller
             ];
             return back()->with($notification);
         }
+
 
         // Update The new Password
         auth()->user()->update([

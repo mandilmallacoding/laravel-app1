@@ -47,20 +47,6 @@
     </div>
 </div>
 
-<script type="text/javascript">
 
-    $(document).ready(function(){
-        $('#profile_img').change(function(e){
-            // console.log("mandil");
-
-            var reader = new FileReader();
-            reader.onload = function(e){
-                $('#showimg').attr('src',e.target.result);
-            }
-            reader.readAsDataURL(e.target.files['0']);
-        });
-    });
-
-</script>
 
 @endsection
