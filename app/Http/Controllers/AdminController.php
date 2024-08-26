@@ -65,38 +65,31 @@ class AdminController extends Controller
         return view('admin.admin_change_password',compact('adminData'));
     }
 
-    public function UpdatePassword(Request $request):RedirectResponse
-    {
+    public function updatePassword(Request $request) {
+        // Validation
+        $request->validate([
+            'oldpassword' => 'required',
+            'newpassword' => 'required|confirmed'
+        ]);
 
-        // Validate the incoming request
-        // $request->validate([
-        //     'oldpassword' => 'required', // Check that the old password is provided
-        //     'newpassword' => 'required|confirmed', // Ensure new password matches confirmation
-        // ]);
-        $hashedpassword = Auth::user()->password;
-        if(Hash::check($request->oldpassword, $hashedpassword)){
-            $id = Auth::user()->id;
-            $user = User::find($id);
-            $user->password = Hash::make($request->newpassword);
-            $user->save();
-
-            //toaster
-            $notification = array(
-            'message' => 'old pw matched',
-            'alert-type' => 'success'
-            );
-            return back()->with($notification);
-
-        }else{
-
-            // session()->flash('message',"old password doesn't match");
-            $notification = array(
-                'message' => 'old password not match',
-                'alert-type' => 'success'
-                );
+        if (!Hash::check($request->oldpassword, auth()->user()->password)) {
+            $notification = [
+                'message' => 'Old Password Does not Match!',
+                'alert-type' => 'error'
+            ];
             return back()->with($notification);
         }
-    }
 
 
+        // Update The new Password
+        auth()->user()->update([
+            'password' => Hash::make($request->newpassword)
+        ]);
+
+        $notification = [
+            'message' => 'Password Changed Successfully',
+            'alert-type' => 'success'
+        ];
+        return back()->with($notification);
+    }/// end method
 }
