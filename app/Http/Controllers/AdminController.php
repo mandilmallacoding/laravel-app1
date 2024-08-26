@@ -65,6 +65,7 @@ class AdminController extends Controller
         return view('admin.admin_change_password',compact('adminData'));
     }
 
+
     public function updatePassword(Request $request) {
         // Validation
         $request->validate([
