@@ -5,7 +5,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('frontend.main_master');
+    return view('frontend.index');
 });
 
 Route::get('/dashboard', function () {
