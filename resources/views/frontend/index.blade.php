@@ -5,7 +5,8 @@
         <!-- banner-area-end -->
 
         <!-- about-area -->
-        <section id="aboutSection" class="about">
+        @include('frontend.home_all.home_about')
+        {{-- <section id="aboutSection" class="about">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-6">
@@ -60,7 +61,7 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section> --}}
         <!-- about-area-end -->
 
         <!-- services-area -->
